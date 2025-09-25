@@ -1,0 +1,16 @@
+CUDA_VISIBLE_DEVICES=0 swift sft \
+  --model multimodels/meta-llama/llama \
+  --train_type lora \
+  --dataset src/finetuning/rogv5/fvqa_llama.json \
+  --torch_dtype bfloat16 \
+  --num_train_epochs 3 \
+  --lora_rank 32 \
+  --lora_alpha 64 \
+  --max_length 8192  \
+  --target_modules q_proj k_proj v_proj o_proj gate_proj up_proj down_proj \
+  --per_device_train_batch_size 1 \
+  --gradient_accumulation_steps 16 \
+  --output_dir ./output-lora \
+  --save_strategy epoch \
+  --logging_steps 10 \
+  --bf16 True
