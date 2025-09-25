@@ -3,6 +3,7 @@ device=0
 data=okvqa
 split=train
 input=results/okvqa/qwen/train/dual_path_3.josnl
+output_path=results
 model_path=model/qwen
 data_path=data/okvqa
 CUDA_VISIBLE_DEVICES=${device} python ./src/reasoning/reasoning.py \
@@ -11,4 +12,5 @@ CUDA_VISIBLE_DEVICES=${device} python ./src/reasoning/reasoning.py \
   --data ${data} \
   --split ${split} \
   --model_path ${model_path}\
-  --data_path ${data_path}
+  --data_path ${data_path} \
+  --output_path ${output_path}

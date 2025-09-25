@@ -216,6 +216,8 @@ if __name__ == "__main__":
     parser.add_argument("--output_path", type=str, default="results/multimodal", help="Directory to save predictions")
     parser.add_argument("--data", type=str, default="OKVQA", help="Dataset name")
     parser.add_argument("--model", type=str, default="Qwen2.5-VL-7B-Instruct", help="Model name for saving results")
+    parser.add_argument("--model_path")
+    parser.add_argument("--data_path")
     parser.add_argument("--input_num",type=int)
     parser.add_argument("--input",type=str)
     args = parser.parse_args()

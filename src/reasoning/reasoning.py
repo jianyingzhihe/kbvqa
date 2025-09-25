@@ -105,10 +105,15 @@ if __name__ == "__main__":
     parser.add_argument("--model_path")
     parser.add_argument("--data_path")
     parser.add_argument("--split")
+    parser.add_argument("--output_path")
     args = parser.parse_args()
     generated=[]
     input_file=args.input
-    output_file=f"results/{args.data}/{args.model}/{args.split}/reasons.jsonl"
+    output_dir = os.path.join(args.output_path, args.data, args.model, args.split)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    output_file=os.path.join(args.ouput_dir,"reasons.jsonl")
+    print("Save results to: ", output_file)
 
     if not os.path.exists(output_file):
         with open(output_file,"w") as f:
