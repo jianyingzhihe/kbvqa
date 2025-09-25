@@ -61,7 +61,7 @@ def extract_prediction_paths(data):
     prediction_paths = []
     for prediction in data['prediction']:
         try:
-            paths = prediction.split('\n')  # 根据换行符分割text_path和image_path
+            paths = prediction.split('\n')
             text_path = paths[0].replace("<PATH>", "").replace("</PATH>", "").replace("<SEP>", " -> ").strip().removeprefix("text_path: ")
             image_path = paths[1].replace("<PATH>", "").replace("</PATH>", "").replace("<SEP>", " -> ").strip().removeprefix("image_path: ")
             prediction_paths.append({'text_path': text_path, 'vision_path': image_path})
