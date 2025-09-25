@@ -304,11 +304,11 @@ class datap():
 
         accuracy = (correct_count / total_count * 100) if total_count > 0 else 0.0
         print(f" {correct_count} / {total_count}")
-        print(f" 准确率: {accuracy:.2f}%")
+        print(f" acc: {accuracy:.2f}%")
 
         return correct_count, total_count, accuracy
 
-class datav():#给vqa用
+class datav():
     def __init__(self, datapath, split="val"):
         self.ans_path = f"abstract_v002_{split}2017_annotations.json"
         self.que_path = f"OpenEnded_abstract_v002_{split}2017_questions.json"

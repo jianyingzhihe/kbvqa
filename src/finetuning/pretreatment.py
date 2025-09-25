@@ -142,7 +142,7 @@ def process_jsonl_to_json(input_path, path_jsonl,output_path, dataset):
 
 
 
-# 示例调用
+
 if __name__ == "__main__":
     # parser = argparse.ArgumentParser(description="Run multi-modal QA prediction with Qwen2.5-VL")
     # parser.add_argument("--model", type=str, default="qwen")
@@ -158,8 +158,8 @@ if __name__ == "__main__":
     for mod in models:
         for dataset in datasets:
             path_jsonl=f"/root/autodl-tmp/RoG/qwen/romg/{dataset}/{mod}/train/predictions_3_False_train_1.jsonl"
-            input_jsonl = f"/root/autodl-tmp/RoG/qwen/results/multimodal/{dataset}/{mod}/train/predictions.jsonl"  # 替换为你的输入文件路径
-            output_json = f"/root/autodl-tmp/RoG/qwen/src/ablation/2train/{dataset}_{mod}.jsonl"  # 输出为 .json 文件
+            input_jsonl = f"/root/autodl-tmp/RoG/qwen/results/multimodal/{dataset}/{mod}/train/predictions.jsonl"
+            output_json = f"/root/autodl-tmp/RoG/qwen/src/ablation/2train/{dataset}_{mod}.jsonl"
             if dataset=="fvqa":
                 ds=ds_fvqa
             elif dataset=="okvqa":

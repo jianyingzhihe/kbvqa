@@ -39,7 +39,6 @@ def solve(daset, engine,output_file):
                 images=[each.image]
             )
 
-            # 推理
         try:
             resp_list = engine.infer([infer_request], request_config)
             response_text = resp_list[0].choices[0].message.content
