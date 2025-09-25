@@ -1,7 +1,7 @@
 CUDA_VISIBLE_DEVICES=0 swift sft \
-  --model multimodels/meta-llama/llama \
+  --model multimodels/qwen \
   --train_type lora \
-  --dataset src/finetuning/rogv5/fvqa_llama.json \
+  --dataset results/okvqa/qwen/train/3_train.jsonl \
   --torch_dtype bfloat16 \
   --num_train_epochs 3 \
   --lora_rank 32 \

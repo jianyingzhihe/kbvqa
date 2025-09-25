@@ -6,11 +6,11 @@ import traceback
 import warnings
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/..")
-from fileloader.dataloader import *
 import tqdm
-from fileloader.qwen import *
-from fileloader.google import *
-from fileloader.llama import *
+from ..fileloader.dataloader import *
+from ..fileloader.qwen import *
+from ..fileloader.google import *
+from ..fileloader.llama import *
 import argparse
 
 
@@ -150,40 +150,34 @@ def resolve(item):
 
 def main(args):
     print("Loading dataset...")
-    output_file_choice = os.path.join(args.output_path, f"./choice/{args.data}_{args.model}_{args.input_num}_choice.jsonl")
-    output_file_train=os.path.join(args.output_path, f"./train/{args.data}_{args.model}_{args.input_num}_train.jsonl")
+    output_file_choice = os.path.join(args.output_path, f"{args.data}/{args.model}/{args.split}/{args.input_num}_choice.jsonl")
+    output_file_train=os.path.join(args.output_path, f"{args.data}/{args.model}/{args.split}/{args.input_num}_train.jsonl")
     fout_choice, processed_list = get_output_file(output_file_choice, force=False)
     fout_train,processed_list=get_output_file(output_file_train, force=True)
     predictions=[]
 
     if args.data.lower()=="fvqa":
-        print("fvqa is loading")
-        qapath = "/root/autodl-tmp/RoG/qwen/data/FVQA/new_dataset_release/all_qs_dict_release.json"
-        image = "/root/autodl-tmp/RoG/qwen/data/FVQA/new_dataset_release/images"
-        dataset = dataf(qapath,image)
+        ds=dataf(args.data_path,args.split)
     elif args.data.lower()=="okvqa":
-        dataset=datas("/root/autodl-tmp/RoG/qwen/data/OKVQA/",split=args.split)
-        dataset.solve_answer()
+        ds=datas(args.data_path,args.split)
 
-    if args.model=="gemma":
-        model = googlemod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/google/gemma",type="hf")
-    elif args.model=="llama":
-        model=llamamod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/meta-llama/llama",type="hf")
-    elif args.model=="qwen":
-        model=qwenmod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/Qwen/qwenvl",type="hf")
-
-
+    if args.model == "qwen":
+        model = qwenmod(modelpath=args.model_path)
+    elif args.model == "gemma" or args.model == "google":
+        model = googlemod(modelpath=args.model_path)
+    elif args.model == "llama":
+        model = llamamod(modelpath=args.model_path)
 
     print("Save results to:", args.output_path)
 
-    with open(args.predictions,"r") as f:
+    with open(args.input,"r") as f:
         for line in f:
             data=json.loads(line.strip())
             predictions.append(data)
     for each in tqdm.tqdm(predictions):
         each["prediction"]=[resolve(item) for item in each["prediction"]]
         print(each["id"])
-        item=dataset.getitem(each["id"])
+        item=ds.getitem(each["id"])
         raw_question = item.question
         exp_path_pair=each["prediction"]
 
@@ -223,7 +217,7 @@ if __name__ == "__main__":
     parser.add_argument("--data", type=str, default="OKVQA", help="Dataset name")
     parser.add_argument("--model", type=str, default="Qwen2.5-VL-7B-Instruct", help="Model name for saving results")
     parser.add_argument("--input_num",type=int)
-    parser.add_argument("--predictions")
+    parser.add_argument("--input",type=str)
     args = parser.parse_args()
 
     main(args)

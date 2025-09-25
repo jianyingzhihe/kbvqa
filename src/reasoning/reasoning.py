@@ -125,7 +125,6 @@ if __name__ == "__main__":
         ds=dataf(args.data_path,args.split)
     elif args.data.lower()=="okvqa":
         ds=datas(args.data_path,args.split)
-
     if args.model == "qwen":
         model = qwenmod(modelpath=args.model_path)
     elif args.model == "gemma" or args.model == "google":
