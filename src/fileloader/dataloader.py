@@ -341,9 +341,11 @@ class datav():#给vqa用
 
 
 class dataf():
-    def __init__(self, qapath,imagepath, split="val"):
+    def __init__(self, data_path, split="val"):
         self.datatype="fvqa"
-        with open(qapath, "r") as f1:
+        qa_path=os.path.join(data_path,"all_qs_dict_release.json")
+        image_path=os.path.join(data_path,"images")
+        with open(qa_path, "r") as f1:
             self.all = []
             data = json.load(f1)
             # print(type(data))
@@ -351,7 +353,7 @@ class dataf():
                 temp=qapair(
                         data[each]["question"],
                     data[each]["answer"],
-                    os.path.join(imagepath,data[each]["img_file"]),
+                    os.path.join(image_path,data[each]["img_file"]),
                     each
                     )
                 temp.duplicate([data[each]["answer"]])

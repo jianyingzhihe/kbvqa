@@ -1,13 +1,14 @@
 model=qwen
 device=0
 data=okvqa
-total_parts=1
 split=train
-for ((i=1;i<6;i++))
-do
-  CUDA_VISIBLE_DEVICES=${device} python ./src/predict/reason_path.py \
+input=results/okvqa/qwen/train/dual_path_3.josnl
+model_path=model/qwen
+data_path=data/okvqa
+CUDA_VISIBLE_DEVICES=${device} python ./src/reasoning/reasoning.py \
+  --input ${input} \
   --model ${model} \
   --data ${data} \
   --split ${split} \
-
-done
+  --model_path ${model_path}\
+  --data_path ${data_path}

@@ -95,19 +95,21 @@ def generate_answer(line,model,ds):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--part", type=int, required=True, )
-    parser.add_argument("--total_parts", type=int, default=8)
     parser.add_argument("--data", type=str, default="fvqa",
                         choices=["fvqa", "aokvqa", "okvqa"],
                         help="Type of dataset to use")
     parser.add_argument("--model", type=str, default="qwen",
                         choices=["qwen", "gemma", "google", "llama", "intern"],
                         help="Type of model to use")
+    parser.add_argument("--input")
+    parser.add_argument("--model_path")
+    parser.add_argument("--data_path")
     parser.add_argument("--split")
-    parser.add_argument("--test_num")
     args = parser.parse_args()
     generated=[]
-    output_file=f"/root/autodl-tmp/RoG/qwen/src/superargs/dual_path/{args.data}/{args.model}/{args.split}/reasons.jsonl"
+    input_file=args.input
+    output_file=f"results/{args.data}/{args.model}/{args.split}/reasons.jsonl"
+
     if not os.path.exists(output_file):
         with open(output_file,"w") as f:
             pass
@@ -119,25 +121,20 @@ if __name__ == "__main__":
             except:
                 traceback.print_exc()
 
-    if args.data == "fvqa":
-        qapath = "/root/autodl-tmp/RoG/qwen/data/FVQA/new_dataset_release/all_qs_dict_release.json"
-        image_path = "/root/autodl-tmp/RoG/qwen/data/FVQA/new_dataset_release/images"
-        ds = dataf(qapath, image_path,"train")
-    elif args.data == "okvqa":
-        ds = datas("/root/autodl-tmp/RoG/qwen/data/OKVQA",split="train")
+    if args.data.lower()=="fvqa":
+        ds=dataf(args.data_path,args.split)
+    elif args.data.lower()=="okvqa":
+        ds=datas(args.data_path,args.split)
 
     if args.model == "qwen":
-        model = qwenmod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/Qwen/qwenvl",)
+        model = qwenmod(modelpath=args.model_path)
     elif args.model == "gemma" or args.model == "google":
-        model = googlemod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/google/gemma")
+        model = googlemod(modelpath=args.model_path)
     elif args.model == "llama":
-        model = llamamod(modelpath="/root/autodl-tmp/RoG/qwen/multimodels/meta-llama/llama")
+        model = llamamod(modelpath=args.model_path)
 
-    input_file=f"/root/autodl-tmp/RoG/qwen/src/superargs/dual_path/{args.data}/{args.model}/{args.split}/predictions_5_train.jsonl"
     cnt=0
-    args.part=int(args.part)
     print(len(ds.combined))
-
     generate_answer_list(input_file,output_file,model,ds)
 
 
